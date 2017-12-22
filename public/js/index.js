@@ -15,6 +15,13 @@ $(function () {
   disorganize()
   getTime()
 
+  $('.removeAll').click(function () {
+    $.get('/removeAll', function (res) {
+      console.log(res);
+      getTime()
+    })
+  })
+
   $.get('/getTime', function (res) {
     console.log(res);
   })
@@ -102,6 +109,7 @@ $(function () {
   })
 
   $('.resultList').delegate('li', 'click', function () {
+    $('.resultList .disorganizeText').css('display', 'none')
     var c = $(this).children().eq(1).css('display')
     if(c==='none'){
       $(this).children().eq(1).css('display', 'block')
@@ -110,11 +118,21 @@ $(function () {
     }
     console.log(123123213213);
   })
+    .delegate('.delete', 'click', function (event) {
+      event.stopPropagation()
+      $.get('/deleteOne', {
+        id: $(this).attr('id')
+      }, function (res) {
+        getTime()
+        console.log(res);
+      })
+      $(this).attr('id')
+      console.log('qweqweqwe');
+    })
 
   function getTime () {
     $.get('/getTime', function (res) {
       $('.resultList').empty()
-      console.log(res);
       var avg5 = []
       var avg5Sum = 0
       var avg12 = []
@@ -122,7 +140,7 @@ $(function () {
 
       res.map(function (item, index) {
 
-        if(avg5.length>4){
+        if(avg5.length>3){
           avg5.shift()
           avg5.push(item.time)
           avg5Sum = 0
@@ -134,7 +152,7 @@ $(function () {
           avg5.push(item.time)
           avg5Sum = 'N/A'
         }
-        if(avg12.length>11) {
+        if(avg12.length>10) {
           avg12.shift()
           avg12.push(item.time)
           avg12Sum = 0
@@ -155,7 +173,7 @@ $(function () {
           '<div class="avg5">'+avg5Sum+'</div>'+
           '<div class="avg12">'+avg12Sum+'</div>'+
           '</div>'+
-          '<div class="disorganizeText hide">'+item.disorganize+'</div>',
+          '<div class="disorganizeText hide">'+item.disorganize+'<div class="deleteOne"><div class="delete" id="' +item._id+ '">删除此条记录</div></div></div>',
           class: 'resultItem'
         }).appendTo('.resultList')
       })

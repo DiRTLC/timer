@@ -40,6 +40,24 @@ app.get("/addTime", function (req, res) {
   })
 })
 
+app.get('/deleteOne', function (req, res) {
+  var id = req.query.id
+  Timer.remove({_id: id}, function (err) {
+    if(!err){
+      res.send('ok')
+    }
+  })
+})
+
+app.get('/removeAll', function (req, res) {
+
+  Timer.remove({}, function (err) {
+    console.log(err);
+    res.send('成功')
+  })
+
+})
+
 
 
 app.listen('3000', function () {
