@@ -11,9 +11,16 @@ $(function () {
   var willAdd = true
   var willDisorganize = false
   var showDis = false
+
   disorganize()
+  getTime()
+
+  $.get('/getTime', function (res) {
+    console.log(res);
+  })
 
   $('html').keydown(function (event) {
+    event.preventDefault()
     if(event.key===' '){
       $('.showTime').addClass('once')
       if(willStop){
@@ -26,33 +33,36 @@ $(function () {
           var disorganize = $('.disorganize').text()
           var avg5 = parseFloat(time)*100
           var avg12 = parseFloat(time)*100
-          if($('.resultItem .time').length>3){
-            $('.resultItem .time').slice(-4).map(function () {
-              avg5 += parseFloat($(this).text())*100
-            })
-            avg5 = parseInt(avg5/5)/100
-          }else{
-            avg5 = 'N/A'
-          }
-          if($('.resultItem .time').length>10) {
-            $('.resultItem .time').slice(-11).map(function () {
-              avg12 += parseFloat($(this).text()) * 100
-            })
-            avg12 = parseInt(avg12 / 12) / 100
-          }else{
-            avg12 = 'N/A'
-          }
+          // if($('.resultItem .time').length>3){
+          //   $('.resultItem .time').slice(-4).map(function () {
+          //     avg5 += parseFloat($(this).text())*100
+          //   })
+          //   avg5 = parseInt(avg5/5)/100
+          // }else{
+          //   avg5 = 'N/A'
+          // }
+          // if($('.resultItem .time').length>10) {
+          //   $('.resultItem .time').slice(-11).map(function () {
+          //     avg12 += parseFloat($(this).text()) * 100
+          //   })
+          //   avg12 = parseInt(avg12 / 12) / 100
+          // }else{
+          //   avg12 = 'N/A'
+          // }
 
-          $('<li/>',{
-            html: '<div class="itemMain">'+
-            '<div class="serial">'+serial+'</div>'+
-            '<div class="time">'+time+'</div>'+
-            '<div class="avg5">'+avg5+'</div>'+
-            '<div class="avg12">'+avg12+'</div>'+
-            '</div>'+
-            '<div class="disorganizeText hide">'+disorganize+'</div>',
-            class: 'resultItem'
-          }).appendTo('.resultList')
+          $.get('/addTime', {
+            time: time,
+            serial: serial,
+            disorganize: disorganize
+          }, function () {
+            console.log('成功');
+          })
+
+          getTime()
+
+
+
+
 
           willAdd = false
         }
@@ -100,6 +110,58 @@ $(function () {
     }
     console.log(123123213213);
   })
+
+  function getTime () {
+    $.get('/getTime', function (res) {
+      $('.resultList').empty()
+      console.log(res);
+      var avg5 = []
+      var avg5Sum = 0
+      var avg12 = []
+      var avg12Sum = 0
+
+      res.map(function (item, index) {
+
+        if(avg5.length>4){
+          avg5.shift()
+          avg5.push(item.time)
+          avg5Sum = 0
+          for(var i=0; i<avg5.length; i++){
+            avg5Sum += parseInt(avg5[i]*100)
+          }
+          avg5Sum = parseInt(avg5Sum/5)/100
+        }else{
+          avg5.push(item.time)
+          avg5Sum = 'N/A'
+        }
+        if(avg12.length>11) {
+          avg12.shift()
+          avg12.push(item.time)
+          avg12Sum = 0
+          for(var i=0; i<avg12.length; i++){
+            avg12Sum += parseInt(avg12[i]*100)
+          }
+          avg12Sum = parseInt(avg12Sum/12)/100
+        }else{
+          avg12.push(item.time)
+          avg12Sum = 'N/A'
+        }
+
+
+        $('<li/>',{
+          html: '<div class="itemMain">'+
+          '<div class="serial">'+(index+1)+'</div>'+
+          '<div class="time">'+item.time+'</div>'+
+          '<div class="avg5">'+avg5Sum+'</div>'+
+          '<div class="avg12">'+avg12Sum+'</div>'+
+          '</div>'+
+          '<div class="disorganizeText hide">'+item.disorganize+'</div>',
+          class: 'resultItem'
+        }).appendTo('.resultList')
+      })
+    })
+    $('.listContent').scrollTop($('.resultList').height())
+  }
 
   function start () {
     willStart = false
