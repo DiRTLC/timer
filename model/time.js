@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var timeSchema = new Schema({
-  time: Number,
+  time: String,
   state: String,
   serial: Number,
   disorganize: String,

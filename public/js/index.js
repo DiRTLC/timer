@@ -1,4 +1,12 @@
 $(function () {
+  $.ajax({
+    type: "GET",
+    url: "12.js",
+    dataType: "script"
+  });
+  // $.getScript('12.js', function () {
+  //   console.log('qwerqwerqwerqwerqwerwqerwerqwerqwerqwer');
+  // })
   var ms, sec, min;
   ms = sec = min = 0
   var holdTimer = 0
@@ -37,9 +45,10 @@ $(function () {
         if(willAdd){
           var serial = $('.resultList').children().length + 1
           var time = $('.showTime>span').text()
+          console.log(time);
           var disorganize = $('.disorganize').text()
-          var avg5 = parseFloat(time)*100
-          var avg12 = parseFloat(time)*100
+          // var avg5 = parseFloat(time)*100
+          // var avg12 = parseFloat(time)*100
           // if($('.resultItem .time').length>3){
           //   $('.resultItem .time').slice(-4).map(function () {
           //     avg5 += parseFloat($(this).text())*100
@@ -132,6 +141,7 @@ $(function () {
 
   function getTime () {
     $.get('/getTime', function (res) {
+      console.log(res);
       $('.resultList').empty()
       var avg5 = []
       var avg5Sum = 0
@@ -141,27 +151,37 @@ $(function () {
       res.map(function (item, index) {
 
         if(avg5.length>3){
-          avg5.shift()
-          avg5.push(item.time)
+          if(avg5.length===5){
+            avg5.shift()
+          }
+
+          avg5.push((item.time)*1)
+          console.log(avg5);
           avg5Sum = 0
           for(var i=0; i<avg5.length; i++){
+            console.log(avg5[i]);
+            console.log(avg5[i] * 100)
+            console.log(parseInt(avg5[i]*100));
             avg5Sum += parseInt(avg5[i]*100)
           }
           avg5Sum = parseInt(avg5Sum/5)/100
         }else{
-          avg5.push(item.time)
+          avg5.push((item.time)*1)
           avg5Sum = 'N/A'
         }
         if(avg12.length>10) {
-          avg12.shift()
-          avg12.push(item.time)
+          if(avg12.length===12){
+            avg12.shift()
+          }
+
+          avg12.push((item.time)*1)
           avg12Sum = 0
           for(var i=0; i<avg12.length; i++){
             avg12Sum += parseInt(avg12[i]*100)
           }
           avg12Sum = parseInt(avg12Sum/12)/100
         }else{
-          avg12.push(item.time)
+          avg12.push((item.time)*1)
           avg12Sum = 'N/A'
         }
 
