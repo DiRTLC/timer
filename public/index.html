@@ -6,151 +6,11 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>计时器</title>
-  <style>
-    *{
-      margin: 0;
-      padding: 0
-    }
-    html, body{
-      width: 100%;
-      height: 100%;
-    }
-    #wrap{
-      width: 100%;
-      height: 100%;
-      background: grey;
-      position: relative;
-    }
-    .header{
-      width: 100%;
-      height: 70px;
-      font-size: 40px;
-      text-align: center;
-      line-height: 70px;
-      border-bottom: 1px blue solid;
-    }
-    .disorganizeWrap{
-      width: 100%;
-      position: absolute;
-      top: 20%;
-      font-size: 22px;
-      text-align: center;
-    }
-    .showTime{
-      width: 100%;
-      background: blanchedalmond;
-      text-align: center;
-      font-size: 0;
-      position: absolute;
-      top: 50%;
-      margin-top: -50px;
-    }
-    .once{
-      color:red
-    }
-    .hold{
-      color: green
-    }
-    .showTime>span{
-      font-size: 140px;
-      line-height: 140px;
-    }
-    .resultListWrap{
-      width: 300px;
-      height: 600px;
-      background: cyan;
-      border-radius: 2px;
-      position: absolute;
-      top:20%;
-      right: 0;
-    }
-    .listTitle{
-      box-sizing: border-box;
-      width: 100%;
-      height: 30px;
-      text-align: center;
-      line-height: 30px;
-      border-bottom: 2px solid grey;
-    }
-    .listClassify{
-      display: flex;
-      box-sizing: border-box;
-      height: 30px;
-      line-height: 30px;
-      border-bottom: 1px grey solid;
-      justify-content: space-around;
-    }
-    .listClassify>div{
-      width: 27%;
-      text-align: center;
-    }
-    .listClassify>div:nth-child(1){
-      width: 19%;
-    }
-    .listContent{
-      width: 100%;
-      position: absolute;
-      top: 60px;
-      left: 0;
-      bottom: 0;
-      overflow: auto;
-    }
-    .resultList{
-      box-sizing: border-box;
-      width: 100%;
-      overflow: hidden;
-      /*height: 100%;*/
-      text-align: center;
-      list-style: none;
-    }
-    .itemMain{
-      display: flex;
-    }
-    .resultItem>div{
-      height: 30px;
-      line-height: 30px;
-    }
-    .serial{
-      width: 20%
-    }
-    .time, .avg5, .avg12{
-      width: 27%;
-    }
-    .resultItem>.disorganizeText{
-      width: 200%;
-      height: 45px;
-      transform: scale(0.5);
-      transform-origin: 0 0;
-      font-size: 22px;
-      text-align: center;
-    }
-    .deleteOne{
-      width: 100%;
-      text-align: right;
-      height: 60px;
-      line-height: 60px;
-    }
-    .deleteOne>div{
-      float: right;
-      margin-right: 30px;
-      box-sizing: border-box;
-      padding: 5px;
-      height: 60px;
-      width: 150px;
-      border-radius: 10px;
-      line-height: 60px;
-    }
-    .deleteOne>div:hover{
-      background: red;
-    }
-    .hide{
-      display: none;
-    }
-
-  </style>
+  <link rel="stylesheet" href="./css/css.css">
 </head>
 <body>
   <div id="wrap">
+    <img src="./img/timg%20(1).jpg" alt="" class="bgImg">
     <div class="header">魔方计时器</div>
     <div class="disorganizeWrap">
       <p class="cubeType">三阶</p>
@@ -172,9 +32,10 @@
 
         </ul>
       </div>
-
+      <div class="removeAll">清空</div>
     </div>
-  </div><div class="removeAll">清空</div>
+
+  </div>
   <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.js"></script>
   <script type="text/javascript" src="./js/index.js"></script>
 </body>

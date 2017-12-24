@@ -1,0 +1,153 @@
+*{
+    margin: 0;
+    padding: 0
+}
+html, body{
+    width: 100%;
+    height: 100%;
+}
+#wrap{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.bgImg{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+}
+.header{
+    width: 100%;
+    height: 70px;
+    color: white;
+    font-size: 40px;
+    text-align: center;
+    line-height: 70px;
+    border-bottom: 1px #e5e5e5 solid;
+}
+.disorganizeWrap{
+    width: 100%;
+    color: white;
+    position: absolute;
+    top: 20%;
+    font-size: 22px;
+    text-align: center;
+}
+.showTime{
+    width: 100%;
+    color: white;
+    text-align: center;
+    font-size: 0;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+}
+.once{
+    color:red
+}
+.hold{
+    color: green
+}
+.showTime>span{
+    font-size: 140px;
+    line-height: 140px;
+}
+.resultListWrap{
+    width: 300px;
+    height: 600px;
+    background: cyan;
+    border-radius: 2px;
+    position: absolute;
+    top:20%;
+    right: 0;
+}
+.listTitle{
+    box-sizing: border-box;
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-bottom: 2px solid grey;
+}
+.listClassify{
+    display: flex;
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px grey solid;
+    justify-content: space-around;
+}
+.listClassify>div{
+    width: 27%;
+    text-align: center;
+}
+.listClassify>div:nth-child(1){
+    width: 19%;
+}
+.listContent{
+    width: 100%;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    bottom: 21px;
+    overflow: auto;
+}
+.removeAll{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.resultList{
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    /*height: 100%;*/
+    text-align: center;
+    list-style: none;
+}
+.itemMain{
+    display: flex;
+}
+.resultItem>div{
+    height: 30px;
+    line-height: 30px;
+}
+.serial{
+    width: 20%
+}
+.time, .avg5, .avg12{
+    width: 27%;
+}
+.resultItem>.disorganizeText{
+    width: 200%;
+    height: 45px;
+    transform: scale(0.5);
+    transform-origin: 0 0;
+    font-size: 22px;
+    text-align: center;
+}
+.deleteOne{
+    width: 100%;
+    text-align: right;
+    height: 60px;
+    line-height: 60px;
+}
+.deleteOne>div{
+    float: right;
+    margin-right: 30px;
+    box-sizing: border-box;
+    padding: 5px;
+    height: 60px;
+    width: 150px;
+    border-radius: 10px;
+    line-height: 60px;
+}
+.deleteOne>div:hover{
+    background: red;
+}
+.hide{
+    display: none;
+}

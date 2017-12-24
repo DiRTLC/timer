@@ -1,12 +1,4 @@
 $(function () {
-  $.ajax({
-    type: "GET",
-    url: "12.js",
-    dataType: "script"
-  });
-  // $.getScript('12.js', function () {
-  //   console.log('qwerqwerqwerqwerqwerwqerwerqwerqwerqwer');
-  // })
   var ms, sec, min;
   ms = sec = min = 0
   var holdTimer = 0
@@ -197,8 +189,9 @@ $(function () {
           class: 'resultItem'
         }).appendTo('.resultList')
       })
+      $('.listContent').scrollTop($('.resultList').height())
     })
-    $('.listContent').scrollTop($('.resultList').height())
+
   }
 
   function start () {
