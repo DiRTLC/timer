@@ -7,7 +7,8 @@ var timeSchema = new Schema({
   state: String,
   serial: Number,
   disorganize: String,
-  date: String
+  date: String,
+  generatedTime: String
 })
 
 module.exports = mongoose.model('timer', timeSchema)

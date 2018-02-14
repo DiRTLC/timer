@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "^4.16.2",
+    "moment": "^2.20.1",
     "mongoose": "^4.13.7",
     "opn": "^5.1.0"
   }

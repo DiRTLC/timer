@@ -12,6 +12,10 @@ $(function () {
   var willDisorganize = false
   var showDis = false
 
+
+
+
+
   disorganize()
   getTime()
 
@@ -22,13 +26,14 @@ $(function () {
     })
   })
 
-  $.get('/getTime', function (res) {
-    console.log(res);
-  })
+  // $.get('/getTime', function (res) {
+  //   console.log(res);
+  // })
 
   $('html').keydown(function (event) {
-    event.preventDefault()
+
     if(event.key===' '){
+      event.preventDefault()
       $('.showTime').addClass('once')
       if(willStop){
         clearInterval(timer)
@@ -39,6 +44,8 @@ $(function () {
           var time = $('.showTime>span').text()
           console.log(time);
           var disorganize = $('.disorganize').text()
+          var generatedTime = moment().format('YYYY-MM-DD hh:mm:ss')
+          console.log(generatedTime)
           // var avg5 = parseFloat(time)*100
           // var avg12 = parseFloat(time)*100
           // if($('.resultItem .time').length>3){
@@ -61,17 +68,13 @@ $(function () {
           $.get('/addTime', {
             time: time,
             serial: serial,
-            disorganize: disorganize
+            disorganize: disorganize,
+            generatedTime: generatedTime
           }, function () {
             console.log('成功');
           })
 
           getTime()
-
-
-
-
-
           willAdd = false
         }
 
@@ -134,6 +137,10 @@ $(function () {
   function getTime () {
     $.get('/getTime', function (res) {
       console.log(res);
+      var $generatedTime = $('.generatedTime')
+
+
+      var amount = res.length
       $('.resultList').empty()
       var avg5 = []
       var avg5Sum = 0
@@ -148,12 +155,12 @@ $(function () {
           }
 
           avg5.push((item.time)*1)
-          console.log(avg5);
+          // console.log(avg5);
           avg5Sum = 0
           for(var i=0; i<avg5.length; i++){
-            console.log(avg5[i]);
-            console.log(avg5[i] * 100)
-            console.log(parseInt(avg5[i]*100));
+            // console.log(avg5[i]);
+            // console.log(avg5[i] * 100)
+            // console.log(parseInt(avg5[i]*100));
             avg5Sum += parseInt(avg5[i]*100)
           }
           avg5Sum = parseInt(avg5Sum/5)/100
@@ -190,6 +197,39 @@ $(function () {
         }).appendTo('.resultList')
       })
       $('.listContent').scrollTop($('.resultList').height())
+
+      var generatedTime = amount ? res[amount-1].generatedTime : 'N/A' ;
+      $generatedTime.text(generatedTime)
+
+
+
+      var $cAndT = $('.cAndT')
+
+      if(!amount){
+        $cAndT.text('N/A')
+        console.log(Boolean($('.complete')));
+      }else{
+
+        if($('.complete')){
+          $cAndT.html('<span class="complete"><span/> / <span class="try"></span>')
+        }
+
+        var $complete = $('.complete')
+        var $try = $('.try')
+        $complete.text(amount)
+        $try.text(amount)
+      }
+
+
+
+
+
+
+
+      getInfo(res, amount)
+
+
+
     })
 
   }
@@ -259,6 +299,53 @@ $(function () {
 
     }
     $('.disorganize').html(disorganizeContent)
+  }
+
+  function getInfo (res, amount) {
+    var grandAvg = 0;
+    var all = [];
+    var onAverage = null;
+    var avg5 = null;
+    var avg12 = null;
+    var fastest = null;
+    var slowest = null;
+
+    res.map(function (item, index) {
+      all.push(parseFloat(item.time));
+      grandAvg += Math.round(parseFloat(item.time)*100)
+    })
+    // console.log(grandAvg);
+    if(all.length){
+      grandAvg = parseInt(grandAvg/amount)/100;
+
+      fastest = Math.min.apply(null, all)
+      slowest = Math.max.apply(null, all)
+
+      console.log(all);
+      var fIndex = all.indexOf(fastest)
+      var sIndex = all.indexOf(slowest)
+      all.splice(fIndex, 1)
+      all.splice(sIndex, 1)
+
+
+      if(all.length>=3 && all.length<10){
+        all.map(function (item, index) {
+          onAverage += Math.round(parseFloat(item)*100)
+        })
+
+        onAverage = parseInt(onAverage/all.length)/100;
+
+        console.log(all);
+        console.log(onAverage);
+      }else if(all.length>=10){
+
+      }
+
+    }
+    $('.grandAvg').text(grandAvg ? grandAvg.toFixed(2) : 'N/A')
+    $('.onAverage').text(onAverage ? onAverage.toFixed(2) : 'N/A')
+    $('.fastest').text(fastest ? fastest.toFixed(2) : 'N/A')
+    $('.slowest').text(slowest ? slowest.toFixed(2) : 'N/A')
   }
 
 })

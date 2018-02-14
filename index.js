@@ -30,11 +30,13 @@ app.get("/addTime", function (req, res) {
   console.log(time);
   var serial = req.query.serial
   var disorganize = req.query.disorganize
+  var generatedTime = req.query.generatedTime
 
   Timer.create({
     time: time,
     serial: serial,
-    disorganize: disorganize
+    disorganize: disorganize,
+    generatedTime: generatedTime
   }, function (err) {
     if(!err){
       res.send('success')

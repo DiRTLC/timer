@@ -14,12 +14,26 @@
     <div class="header">魔方计时器</div>
     <div class="mainWrap">
       <div class="left">
-        <div class="disorganizeWrap">
-          <p class="cubeType">三阶</p>
-          <p class="disorganize"></p>
+        <div class="timerBlock">
+          <div class="disorganizeWrap">
+            <p class="cubeType">三阶</p>
+            <p class="disorganize"></p>
+          </div>
+          <div class="showTime">
+            <span class="second">0</span><span>.</span><span class="millisecond">00</span>
+          </div>
         </div>
-        <div class="showTime">
-          <span class="second">0</span><span>.</span><span class="millisecond">00</span>
+        <div class="info">
+          <p>统计信息生成于 <span class="generatedTime"></span></p>
+          <ul class="infoDetail">
+            <li class="">完成次数/尝试次数: <span class="cAndT"><span class="complete"><span/> / <span class="try"></span></span></li>
+            <li class="">总平均: <span class="grandAvg"></span></li>
+            <li class="">去尾平均: <span class="onAverage"></span></li>
+            <li class="">最快5次去尾平均: <span class="avg5"></span></li>
+            <li class="">最快12次去尾平均: <span class="avg12"></span></li>
+            <li class="">最快单次: <span class="fastest"></span></li>
+            <li class="">最慢单次: <span class="slowest"></span></li>
+          </ul>
         </div>
       </div>
 
@@ -45,6 +59,7 @@
 
   </div>
   <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.js"></script>
+  <script src="https://cdn.bootcss.com/moment.js/2.20.1/moment.js"></script>
   <script type="text/javascript" src="./js/index.js"></script>
 </body>
 </html>
