@@ -13,22 +13,22 @@ $(function () {
   var showDis = false
 
 
-
-
-
   disorganize()
   getTime()
 
   $('.removeAll').click(function () {
-    $.get('/removeAll', function (res) {
-      console.log(res);
-      getTime()
-    })
+    if(confirm('确定要清空成绩列表吗？')){
+      $.get('/removeAll', function (res) {
+        console.log(res);
+        getTime()
+      })
+    }
+
   })
 
-  // $.get('/getTime', function (res) {
-  //   console.log(res);
-  // })
+  $.get('/getTime', function (res) {
+    console.log(res);
+  })
 
   $('html').keydown(function (event) {
 
@@ -112,17 +112,39 @@ $(function () {
     }
   })
 
-  $('.resultList').delegate('li', 'click', function () {
-    $('.resultList .disorganizeText').css('display', 'none')
-    var c = $(this).children().eq(1).css('display')
-    if(c==='none'){
-      $(this).children().eq(1).css('display', 'block')
+  var $resultListControl = $('.resultListControl');
+  var $right = $('.right')
+  var flag = true;
+  $resultListControl.click(function () {
+    $('.resultList .disorganizeText').hide()
+    if(flag){
+      $right.width('0')
+      $resultListControl.children('.text').text('显示列表')
+      $resultListControl.children('.icon').css('transform', 'rotate(180deg)')
     }else{
-      $(this).children().eq(1).css('display', 'none')
+      $right.width('300px')
+      $resultListControl.children('.text').text('隐藏列表')
+      $resultListControl.children('.icon').css('transform', 'rotate(0deg)')
     }
-    console.log(123123213213);
+    flag = !flag
   })
+
+  $('.resultList').delegate('li', 'click', function (event) {
+    var c = $(this).children().eq(1).css('display')
+    var $disorganizeText = $('.resultList .disorganizeText')
+    $disorganizeText.hide()
+    if(c==='none'){
+      $(this).children().eq(1).show()
+    }else{
+      $(this).children().eq(1).hide()
+    }
+
+  })
+    .delegate('.disorganizeText', 'click', function (event) {
+      event.stopPropagation()
+    })
     .delegate('.delete', 'click', function (event) {
+      console.log('delete');
       event.stopPropagation()
       $.get('/deleteOne', {
         id: $(this).attr('id')
@@ -131,12 +153,11 @@ $(function () {
         console.log(res);
       })
       $(this).attr('id')
-      console.log('qweqweqwe');
     })
 
   function getTime () {
     $.get('/getTime', function (res) {
-      console.log(res);
+      // console.log(res);
       var $generatedTime = $('.generatedTime')
 
 
@@ -146,6 +167,13 @@ $(function () {
       var avg5Sum = 0
       var avg12 = []
       var avg12Sum = 0
+
+      var $tip = $('.tip')
+      if(res.length){
+        $tip.hide()
+      }else{
+        $tip.show()
+      }
 
       res.map(function (item, index) {
 
@@ -202,33 +230,7 @@ $(function () {
       $generatedTime.text(generatedTime)
 
 
-
-      var $cAndT = $('.cAndT')
-
-      if(!amount){
-        $cAndT.text('N/A')
-        console.log(Boolean($('.complete')));
-      }else{
-
-        if($('.complete')){
-          $cAndT.html('<span class="complete"><span/> / <span class="try"></span>')
-        }
-
-        var $complete = $('.complete')
-        var $try = $('.try')
-        $complete.text(amount)
-        $try.text(amount)
-      }
-
-
-
-
-
-
-
       getInfo(res, amount)
-
-
 
     })
 
@@ -307,45 +309,96 @@ $(function () {
     var onAverage = null;
     var avg5 = null;
     var avg12 = null;
-    var fastest = null;
-    var slowest = null;
+    // var fastest = null;
+    // var slowest = null;
+    var $cAndT = $('.cAndT')
+
 
     res.map(function (item, index) {
       all.push(parseFloat(item.time));
       grandAvg += Math.round(parseFloat(item.time)*100)
     })
+    var allBackup = [].concat(all)
     // console.log(grandAvg);
+
     if(all.length){
       grandAvg = parseInt(grandAvg/amount)/100;
 
-      fastest = Math.min.apply(null, all)
-      slowest = Math.max.apply(null, all)
 
+      $cAndT.html('<span class="complete"></span> / <span class="try"></span>')
+
+      var $complete = $('.complete')
+      var $try = $('.try')
+      $complete.text(all.length)
+      $try.text(all.length)
+
+      var allResult = deal(all)
       console.log(all);
-      var fIndex = all.indexOf(fastest)
-      var sIndex = all.indexOf(slowest)
-      all.splice(fIndex, 1)
-      all.splice(sIndex, 1)
+      console.log(allResult);
+      allResult.data.map(function (item, index) {
+        // console.log(item, index);
+        onAverage += Math.round(parseFloat(item)*100)
+      })
+      onAverage = parseInt(onAverage/allResult.data.length)/100;
 
+      console.log(onAverage);
+      //
+      // if(all.length>=3 && all.length<10){
+      //
+      //
+      //
+      //
+      //
+      // }else if(all.length>=10){
+      //
+      // }
 
-      if(all.length>=3 && all.length<10){
-        all.map(function (item, index) {
-          onAverage += Math.round(parseFloat(item)*100)
-        })
-
-        onAverage = parseInt(onAverage/all.length)/100;
-
-        console.log(all);
-        console.log(onAverage);
-      }else if(all.length>=10){
-
-      }
-
+    }else{
+      $cAndT.text('N/A')
     }
+
+    var $allAvg5 = $('.right .avg5')
+    var $allAvg12 = $('.right .avg12')
+    var allAvg5 = []
+    var allAvg12 = []
+    for(var i=0; i<$allAvg5.length; i++){
+      if(!($allAvg5.eq(i).text() === 'N/A')){
+        allAvg5.push($allAvg5.eq(i).text()*1)
+      }
+      if(!($allAvg12.eq(i).text() === 'N/A')){
+        allAvg12.push($allAvg12.eq(i).text()*1)
+      }
+    }
+    // console.log(allAvg5)
+    // console.log(Math.min.apply(null, allAvg5))
+    // console.log(Math.min.apply(null, allAvg12))
+    // console.log($allAvg5);
+
     $('.grandAvg').text(grandAvg ? grandAvg.toFixed(2) : 'N/A')
     $('.onAverage').text(onAverage ? onAverage.toFixed(2) : 'N/A')
-    $('.fastest').text(fastest ? fastest.toFixed(2) : 'N/A')
-    $('.slowest').text(slowest ? slowest.toFixed(2) : 'N/A')
+    $('.fastestAvg5').text(allAvg5.length ? Math.min.apply(null, allAvg5) : 'N/A')
+    $('.fastestAvg12').text(allAvg12.length ? Math.min.apply(null, allAvg12) : 'N/A')
+    $('.fastest').text(allBackup.length ? allResult.fast.toFixed(2) : 'N/A')
+    $('.slowest').text(allBackup.length ? allResult.slow.toFixed(2) : 'N/A')
+  }
+
+  function deal (a) {
+    console.log(a);
+    var fastest = Math.min.apply(null, a)
+    var slowest = Math.max.apply(null, a)
+    console.log(fastest)
+    console.log(a);
+    var fIndex = a.indexOf(fastest)
+    a.splice(fIndex, 1)
+    console.log(fIndex);
+    var sIndex = a.indexOf(slowest)
+    a.splice(sIndex, 1)
+    console.log(a);
+    return {
+      data: a,
+      fast: fastest,
+      slow: slowest
+    }
   }
 
 })

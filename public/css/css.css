@@ -62,6 +62,9 @@ html, body{
     font-size: 22px;
     text-align: center;
 }
+.disorganizeWrap .disorganize{
+    margin-top: 15px;
+}
 .showTime{
     width: 100%;
     color: white;
@@ -90,12 +93,49 @@ html, body{
     left: 0;
     color: #fff;
 }
+.resultListControl{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background-color: white;
+    padding: 3px 0 3px 2px;
+    font-weight: bold;
+    border-radius: 3px 0 0 3px;
+}
+.resultListControl:hover{
+    box-shadow: -4px -4px 10px -2px #666;
+}
+.resultListControl .text{
+    width: 16px;
+    line-height: 20px;
+    font-size: 16px;
+}
+.resultListControl .icon{
+    display: block;
+    margin: auto;
+    width: 15px;
+    height: 23px;
+    background-image: url("../img/arrows.png");
+    background-position: -15px 0;
+    background-repeat: no-repeat;
+    background-size: 30px 23px;
+    transition: 200ms;
+}
+
+
+.right{
+    width: 300px;
+    transform: translateY(0px);
+    transition: 200ms
+}
 .resultListWrap{
     width: 300px;
     height: 100%;
     color: white;
     border-left: 1px solid white;
     /*background: cyan;*/
+    box-sizing: border-box;
     border-radius: 2px;
     position: relative;
     /*position: absolute;*/
@@ -130,13 +170,29 @@ html, body{
     position: absolute;
     top: 60px;
     left: 0;
-    bottom: 21px;
-    overflow: auto;
+    bottom: 25px;
+    overflow-y: scroll;
+}
+.tip{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
 }
 .removeAll{
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    box-sizing: border-box;
+    border-top: 1px solid grey;
     position: absolute;
     left: 0;
+    right: 0;
     bottom: 0;
+}
+.removeAll:hover{
+    background-color: red;
 }
 .resultList{
     box-sizing: border-box;
@@ -148,6 +204,9 @@ html, body{
 }
 .itemMain{
     display: flex;
+}
+.resultItem:nth-child(2n){
+    background-color: rgba(80, 80, 80, 0.3);
 }
 .resultItem>div{
     height: 30px;
@@ -181,7 +240,7 @@ html, body{
     height: 60px;
     width: 150px;
     border-radius: 10px;
-    line-height: 60px;
+    line-height: 50px;
 }
 .deleteOne>div:hover{
     background: red;
