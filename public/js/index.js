@@ -26,10 +26,6 @@ $(function () {
 
   })
 
-  $.get('/getTime', function (res) {
-    console.log(res);
-  })
-
   $('html').keydown(function (event) {
 
     if(event.key===' '){
@@ -42,29 +38,11 @@ $(function () {
         if(willAdd){
           var serial = $('.resultList').children().length + 1
           var time = $('.showTime>span').text()
-          console.log(time);
+
+
           var disorganize = $('.disorganize').text()
           var generatedTime = moment().format('YYYY-MM-DD hh:mm:ss')
           console.log(generatedTime)
-          // var avg5 = parseFloat(time)*100
-          // var avg12 = parseFloat(time)*100
-          // if($('.resultItem .time').length>3){
-          //   $('.resultItem .time').slice(-4).map(function () {
-          //     avg5 += parseFloat($(this).text())*100
-          //   })
-          //   avg5 = parseInt(avg5/5)/100
-          // }else{
-          //   avg5 = 'N/A'
-          // }
-          // if($('.resultItem .time').length>10) {
-          //   $('.resultItem .time').slice(-11).map(function () {
-          //     avg12 += parseFloat($(this).text()) * 100
-          //   })
-          //   avg12 = parseInt(avg12 / 12) / 100
-          // }else{
-          //   avg12 = 'N/A'
-          // }
-
           $.get('/addTime', {
             time: time,
             serial: serial,
@@ -176,6 +154,23 @@ $(function () {
       }
 
       res.map(function (item, index) {
+
+
+
+
+
+
+        
+        // var temp = time.split('.')
+        // time = temp[0].split(':')
+        // time.push(temp[1])
+        //
+        // console.log(time)
+
+
+
+
+
 
         if(avg5.length>3){
           if(avg5.length===5){
