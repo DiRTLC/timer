@@ -62,6 +62,13 @@ app.get('/removeAll', function (req, res) {
 
 })
 
+app.get('/register', function (req, res) {
+
+
+  res.send(req.query.username)
+
+})
+
 var port = '3000'
 app.listen(port, function () {
   var url = 'http://127.0.0.1:' + port

@@ -91,7 +91,7 @@ $(function () {
   })
 
   var $resultListControl = $('.resultListControl');
-  var $right = $('.right')
+  var $right = $('.rightWrap')
   var flag = true;
   $resultListControl.click(function () {
     $('.resultList .disorganizeText').hide()
@@ -291,11 +291,421 @@ $(function () {
       }
       d = a
       var b = Math.floor((Math.random())*3)
-      var text = direction[a] + rotationType[b] + "&nbsp;";
+      var text = i<19 ? direction[a] + rotationType[b] + " " : direction[a] + rotationType[b];
       disorganizeContent += text
-
+      
     }
     $('.disorganize').html(disorganizeContent)
+    console.log(disorganizeContent.split(' '));
+    disorganizePic(disorganizeContent)
+  }
+  
+  function disorganizePic (text) {
+    console.log(text);
+    var temp = text.split(' ')
+//  console.log(temp);
+
+
+    var $up = $('.up .block');
+    var $down = $('.down .block');
+    var $front = $('.front .block');
+    var $back = $('.back .block');
+    var $left = $('.left .block');
+    var $right = $('.right .block');
+    $('.cube .block').removeClass('w y g b o r')
+    console.log(initColor);
+    var initColor = {
+      up: ['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+      down: ['y', 'y', 'y', 'y', 'y', 'y', 'y', 'y'],
+      front: ['g', 'g', 'g', 'g', 'g', 'g', 'g', 'g'],
+      back: ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+      left: ['o', 'o', 'o', 'o', 'o', 'o', 'o', 'o'],
+      right: ['r', 'r', 'r', 'r', 'r', 'r', 'r', 'r']
+    }
+    console.log(initColor);
+    var upTemp, frontTemp, backTemp, leftTemp, rightTemp, downTemp;
+    temp.map(function (item, index) {
+      switch (item[0]) {
+        case 'U':
+          upTemp = initColor.up.slice(0);
+          frontTemp = initColor.front.slice(0, 3);
+          backTemp = initColor.back.slice(0, 3);
+          leftTemp = initColor.left.slice(0,3);
+          rightTemp = initColor.right.slice(0, 3);
+//        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
+          if(item.lastIndexOf('\'')===1){
+            for(var i=0,j=2; i<upTemp.length; i++,j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.up[i] = upTemp[j]
+            }
+            for(var i=0; i<3; i++){
+              initColor.front[i] = leftTemp[i];
+              initColor.right[i] = frontTemp[i];
+              initColor.back[i] = rightTemp[i];
+              initColor.left[i] = backTemp[i];
+            }
+          }else if (item.lastIndexOf('2')===1) {
+            for(var i=0,j=4; i<upTemp.length; i++,j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.up[i] = upTemp[j]
+            }
+            for(var i=0; i<3; i++){
+              initColor.front[i] = backTemp[i];
+              initColor.right[i] = leftTemp[i];
+              initColor.back[i] = frontTemp[i];
+              initColor.left[i] = rightTemp[i];
+            }
+          }else{
+            for(var i=0,j=6; i<upTemp.length; i++,j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.up[i] = upTemp[j]
+            }
+            for(var i=0; i<3; i++){
+              initColor.front[i] = rightTemp[i];
+              initColor.right[i] = backTemp[i];
+              initColor.back[i] = leftTemp[i];
+              initColor.left[i] = frontTemp[i];
+            }
+          }
+          break;
+        case 'D':
+          downTemp = initColor.down.slice(0);
+          frontTemp = initColor.front.slice(4, 8);
+          backTemp = initColor.back.slice(4, 8);
+          leftTemp = initColor.left.slice(4, 8);
+          rightTemp = initColor.right.slice(4, 8);
+          if(item.lastIndexOf('\'')===1){
+            for(var i=0,j=2; i<downTemp.length; i++,j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.down[i] = downTemp[j]
+            }
+            for(var i=4,j=0; i<7; i++,j++){
+              initColor.front[i] = rightTemp[j];
+              initColor.right[i] = backTemp[j];
+              initColor.back[i] = leftTemp[j];
+              initColor.left[i] = frontTemp[j];
+            }
+          }else if (item.lastIndexOf('2')===1) {
+            for(var i=0,j=4; i<downTemp.length; i++,j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.down[i] = downTemp[j]
+            }
+            for(var i=4,j=0; i<7; i++,j++){
+              initColor.front[i] = backTemp[j];
+              initColor.right[i] = leftTemp[j];
+              initColor.back[i] = frontTemp[j];
+              initColor.left[i] = rightTemp[j];
+            }
+          }else{
+            for(var i=0,j=6; i<downTemp.length; i++,j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.down[i] = downTemp[j]
+            }
+            for(var i=4,j=0; i<7; i++,j++){
+              initColor.front[i] = leftTemp[j];
+              initColor.right[i] = frontTemp[j];
+              initColor.back[i] = rightTemp[j];
+              initColor.left[i] = backTemp[j];
+            }
+          }
+          console.log(initColor);
+          break;
+        case 'F':
+          frontTemp = initColor.front.slice(0);
+          upTemp = initColor.up.slice(4, 7);
+          downTemp = initColor.down.slice(0, 3);
+          leftTemp = initColor.left.slice(2, 5);
+          rightTemp = initColor.right.slice(6).concat([initColor.right[0]]);
+//        console.log(rightTemp);
+//        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
+          if(item.lastIndexOf('\'')===1){
+            for(var i=0, j=2; i<frontTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.front[i] = frontTemp[j]
+            }
+            for(var i=0, j=0; j<upTemp.length; i++, j++){
+              initColor.up[i+4] = rightTemp[j];
+              initColor.right[i+6>7?i+6-8:i+6] = downTemp[j];
+              initColor.down[i] = leftTemp[j];
+              initColor.left[i+2] = upTemp[j];
+            }
+          }else if (item.lastIndexOf('2')===1) {
+            for(var i=0, j=4; i<frontTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.front[i] = frontTemp[j]
+            }
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i+4] = downTemp[j];
+              initColor.right[i+6>7?i+6-8:i+6] = leftTemp[j];
+              initColor.down[i] = upTemp[j];
+              console.log(rightTemp);
+              initColor.left[i+2] = rightTemp[j];
+            }
+          }else{
+            for(var i=0, j=6; i<frontTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.front[i] = frontTemp[j]
+            }
+            console.log(upTemp.length);
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i+4] = leftTemp[j];
+              initColor.left[i+2] = downTemp[j];
+              initColor.down[i] = rightTemp[j];
+              initColor.right[i+6>7?i+6-8:i+6] = upTemp[j];
+            }
+          }
+          break;
+        case 'B':
+          backTemp = initColor.back.slice(0);
+          upTemp = initColor.up.slice(0, 3);
+          downTemp = initColor.down.slice(4, 7);
+          leftTemp = initColor.left.slice(6).concat([initColor.left[0]]);
+          rightTemp = initColor.right.slice(2, 5);
+//        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
+          if(item.lastIndexOf('\'')===1){
+            for(var i=0, j=2; i<backTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.back[i] = backTemp[j]
+            }
+            for(var i=0, j=0; j<upTemp.length; i++, j++){
+              initColor.up[i] = leftTemp[j];
+              initColor.left[i+6>7?i+6-8:i+6] = downTemp[j];
+              initColor.down[i+4] = rightTemp[j];
+              initColor.right[i+2] = upTemp[j];
+            }
+          }else if (item.lastIndexOf('2')===1) {
+            for(var i=0, j=4; i<backTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.back[i] = backTemp[j]
+            }
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i] = downTemp[j];
+              initColor.right[i+2] = leftTemp[j];
+              initColor.down[i+4] = upTemp[j];
+              initColor.left[i+6>7?i+6-8:i+6] = rightTemp[j];
+            }
+          }else if (item.lastIndexOf('2')===1) {
+            for(var i=0, j=4; i<backTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.back[i] = backTemp[j]
+            }
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i] = downTemp[j];
+              initColor.right[i+2] = leftTemp[j];
+              initColor.down[i+4] = upTemp[j];
+              initColor.left[i+6>7?i+6-8:i+6] = rightTemp[j];
+            }
+          }else{
+            for(var i=0, j=6; i<backTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.back[i] = backTemp[j]
+            }
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i] = rightTemp[j];
+              initColor.right[i+2] = downTemp[j];
+              initColor.down[i+4] = leftTemp[j];
+              initColor.left[i+6>7?i+6-8:i+6] = upTemp[j];
+            }
+          }
+          break;
+        case 'L':
+          leftTemp = initColor.left.slice(0);
+          upTemp = initColor.up.slice(6).concat([initColor.up[0]]);
+          frontTemp = initColor.front.slice(6).concat([initColor.front[0]]);
+          downTemp = initColor.down.slice(6).concat([initColor.down[0]]);
+          backTemp = initColor.back.slice(2, 5);
+//        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
+          if(item.lastIndexOf('\'')===1){
+            for(var i=0, j=2; i<leftTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.left[i] = leftTemp[j]
+            }
+            for(var i=0, j=0; j<upTemp.length; i++, j++){
+              initColor.up[i+6>7?i+6-8:i+6] = frontTemp[j];
+              initColor.front[i+6>7?i+6-8:i+6] = downTemp[j];
+              initColor.down[i+6>7?i+6-8:i+6] = backTemp[j];
+              initColor.back[i+2] = upTemp[j];
+            }
+          }else if (item.lastIndexOf('2')===1) {
+            for(var i=0, j=4; i<leftTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.left[i] = leftTemp[j]
+            }
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i+6>7?i+6-8:i+6] = downTemp[j];
+              initColor.front[i+6>7?i+6-8:i+6] = backTemp[j];
+              initColor.down[i+6>7?i+6-8:i+6] = upTemp[j];
+              initColor.back[i+2] = frontTemp[j];
+            }
+          }else{
+            for(var i=0, j=6; i<leftTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.left[i] = leftTemp[j]
+            }
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i+6>7?i+6-8:i+6] = backTemp[j];
+              initColor.front[i+6>7?i+6-8:i+6] = upTemp[j];
+              initColor.down[i+6>7?i+6-8:i+6] = frontTemp[j];
+              initColor.back[i+2] = downTemp[j];
+            }
+          }
+          break;
+        case 'R':
+          rightTemp = initColor.right.slice(0);
+          upTemp = initColor.up.slice(2, 5);
+          frontTemp = initColor.front.slice(2, 5);
+          downTemp = initColor.down.slice(2, 5);
+          backTemp = initColor.back.slice(6).concat([initColor.back[0]]);
+//        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
+          if(item.lastIndexOf('\'')===1){
+            for(var i=0, j=2; i<rightTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.right[i] = rightTemp[j]
+            }
+            for(var i=0, j=0; j<upTemp.length; i++, j++){
+              initColor.up[i+2] = backTemp[j];
+              initColor.back[i+6>7?i+6-8:i+6] = downTemp[j];
+              initColor.down[i+2] = frontTemp[j];
+              initColor.front[i+2] = upTemp[j];
+            }
+          }else if (item.lastIndexOf('2')===1) {
+            for(var i=0, j=4; i<rightTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.right[i] = rightTemp[j]
+            }
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i+2] = downTemp[j];
+              initColor.back[i+6>7?i+6-8:i+6] = frontTemp[j];
+              initColor.down[i+2] = upTemp[j];
+              initColor.front[i+2] = backTemp[j];
+            }
+          }else{
+            for(var i=0, j=6; i<rightTemp.length; i++, j++){
+              if(j>=8){
+                j = 0;
+              }
+              initColor.right[i] = rightTemp[j]
+            }
+            for(var i=0, j=0; i<upTemp.length; i++, j++){
+              initColor.up[i+2] = frontTemp[j];
+              initColor.front[i+2] = downTemp[j];
+              initColor.down[i+2] = backTemp[j];
+              initColor.back[i+6>7?i+6-8:i+6] = upTemp[j];
+            }
+          }
+          break;
+
+      }
+
+    })
+
+    console.log(initColor);
+    for (var i in initColor){
+      switch (i) {
+        case 'up':
+          initColor[i].map(function (colorItem, colorIndex) {
+//          console.log(colorItem, colorIndex);
+            $up.each(function (index, item) {
+//            console.log(index, item);
+              if(item.className.split(' ')[1][1] == colorIndex){
+                $up.eq(index).addClass(colorItem)
+              }
+            })
+          })
+          break;
+        case 'down':
+          initColor[i].map(function (colorItem, colorIndex) {
+//          console.log(colorItem, colorIndex);
+            $down.each(function (index, item) {
+//            console.log(index, item);
+              if(item.className.split(' ')[1][1] == colorIndex){
+                $down.eq(index).addClass(colorItem)
+              }
+            })
+          })
+          break;
+        case 'front':
+          initColor[i].map(function (colorItem, colorIndex) {
+//          console.log(colorItem, colorIndex);
+            $front.each(function (index, item) {
+//            console.log(index, item);
+              if(item.className.split(' ')[1][1] == colorIndex){
+                $front.eq(index).addClass(colorItem)
+              }
+            })
+          })
+          break;
+        case 'back':
+          initColor[i].map(function (colorItem, colorIndex) {
+//          console.log(colorItem, colorIndex);
+            $back.each(function (index, item) {
+//            console.log(index, item);
+              if(item.className.split(' ')[1][1] == colorIndex){
+                $back.eq(index).addClass(colorItem)
+              }
+            })
+          })
+          break;
+        case 'left':
+          initColor[i].map(function (colorItem, colorIndex) {
+//          console.log(colorItem, colorIndex);
+            $left.each(function (index, item) {
+//            console.log(index, item);
+              if(item.className.split(' ')[1][1] == colorIndex){
+                $left.eq(index).addClass(colorItem)
+              }
+            })
+          })
+          break;
+        case 'right':
+          initColor[i].map(function (colorItem, colorIndex) {
+//          console.log(colorItem, colorIndex);
+            $right.each(function (index, item) {
+//            console.log(index, item);
+              if(item.className.split(' ')[1][1] == colorIndex){
+                $right.eq(index).addClass(colorItem)
+              }
+            })
+          })
+          break;
+      }
+    }
   }
 
   function getInfo (res, amount) {
