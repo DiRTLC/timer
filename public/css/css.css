@@ -57,6 +57,42 @@ ul{
     position: relative;
     flex: 1;
 }
+.nav{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    /*color: #fff;*/
+    width: 100%;
+    height: 25px;
+
+}
+.nav li{
+    width: 100px;
+    height: 100%;
+    float: left;
+    margin-right: 2px;
+    background-color: #fff;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+select{
+    width: 100%;
+    height: 100%;
+    cursor: inherit;
+    /*color: #fff;*/
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+select option{
+    /*background-color: grey;*/
+
+}
+
+
+
 .timerBlock{
     position: absolute;
     left: 0;
@@ -107,7 +143,7 @@ ul{
 }
 
 .disorganizePicBG{
-    width: 280px;
+    width: 300px;
     position: absolute;
     bottom:0;
     right:0;
@@ -160,33 +196,33 @@ ul{
     padding: 1px;
 }
 .disorganizePic ul>li{
-    width: 33.3333333333%;
-    height: 33.3333333333%;
+    /*width: 33.3333333333%;*/
+    /*height: 33.3333333333%;*/
     box-sizing: border-box;
-    border: 2px solid black;
+    border: 0.5px solid black;
     border-radius: 5%;
 }
-.disorganizePic .upInner, .disorganizePic .downInner{
+.disorganizePic .inner:first-of-type, .disorganizePic .inner:last-of-type{
     margin: 0 50% 0 25%;
 }
-.upCenter{
-    background: #FFFFFF;
-}
-.frontCenter{
-    background: #00FF00;
-}
-.leftCenter{
-    background: #ff5d00;
-}
-.rightCenter{
-    background: #FF0000;
-}
-.backCenter{
-    background: #0000FF;
-}
-.downCenter{
-    background: #FFFF00;
-}
+/*.upCenter{*/
+    /*background: #FFFFFF;*/
+/*}*/
+/*.frontCenter{*/
+    /*background: #00FF00;*/
+/*}*/
+/*.leftCenter{*/
+    /*background: #ff5d00;*/
+/*}*/
+/*.rightCenter{*/
+    /*background: #FF0000;*/
+/*}*/
+/*.backCenter{*/
+    /*background: #0000FF;*/
+/*}*/
+/*.downCenter{*/
+    /*background: #FFFF00;*/
+/*}*/
 .w{
     background: #FFFFFF;
 }
@@ -393,6 +429,9 @@ ul{
 }
 .resultItem:nth-child(2n){
     background-color: rgba(80, 80, 80, 0.3);
+}
+.resultItem:hover{
+    background-color: rgba(80, 80, 80, 0.5);
 }
 .resultItem>div{
     height: 30px;

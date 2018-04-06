@@ -14,22 +14,33 @@
     <div class="header">魔方计时器</div>
     <div class="mainWrap">
       <div class="leftWrap">
-        <ul class="nav">
-          <li class="">魔方类型</li>
-          <li class="">新打乱</li>
-          <li class="">工具</li>
-          <li class=""></li>
-          <li class=""></li>
-        </ul>
+
+
         <div class="timerBlock">
           <div class="disorganizeWrap">
-            <p class="cubeType">三阶</p>
+            <p class="cubeType"></p>
             <p class="disorganize"></p>
           </div>
           <div class="showTime">
             <span class="second">0</span><span>.</span><span class="millisecond">00</span>
           </div>
         </div>
+        <ul class="nav">
+          <li class="type">
+            <select name="cubeType">
+              <option value="2">二阶</option>
+              <option value="3" selected>三阶</option>
+              <option value="4">四阶</option>
+              <option value="5">五阶</option>
+              <option value="6">六阶</option>
+              <option value="7">七阶</option>
+            </select>
+          </li>
+          <li class="newDisorganize">新打乱</li>
+          <li class="tools">工具</li>
+          <!--<li class=""></li>-->
+          <!--<li class=""></li>-->
+        </ul>
         <div class="info">
           <p>统计信息生成于 <span class="generatedTime"></span></p>
           <ul class="infoDetail">
@@ -46,90 +57,90 @@
           <div class="disorganizePicWrap">
             <p></p>
             <div class="disorganizePic">
-              <div class="inner upInner">
-                <ul class="cube up">
-                  <li class="block b0"></li>
-                  <li class="block b1"></li>
-                  <li class="block b2"></li>
-                  <li class="block b7"></li>
-                  <li class="upCenter"></li>
-                  <li class="block b3"></li>
-                  <li class="block b6"></li>
-                  <li class="block b5"></li>
-                  <li class="block b4"></li>
-                </ul>
-                <p></p>
-              </div>
-              <div class="inner">
-                <ul class="cube left">
-                  <li class="block b0"></li>
-                  <li class="block b1"></li>
-                  <li class="block b2"></li>
-                  <li class="block b7"></li>
-                  <li class="leftCenter"></li>
-                  <li class="block b3"></li>
-                  <li class="block b6"></li>
-                  <li class="block b5"></li>
-                  <li class="block b4"></li>
-                </ul>
-                <p></p>
-              </div>
-              <div class="inner">
-                <ul class="cube front">
-                  <li class="block b0"></li>
-                  <li class="block b1"></li>
-                  <li class="block b2"></li>
-                  <li class="block b7"></li>
-                  <li class="frontCenter"></li>
-                  <li class="block b3"></li>
-                  <li class="block b6"></li>
-                  <li class="block b5"></li>
-                  <li class="block b4"></li>
-                </ul>
-                <p></p>
-              </div>
-              <div class="inner">
-                <ul class="cube right">
-                  <li class="block b0"></li>
-                  <li class="block b1"></li>
-                  <li class="block b2"></li>
-                  <li class="block b7"></li>
-                  <li class="rightCenter"></li>
-                  <li class="block b3"></li>
-                  <li class="block b6"></li>
-                  <li class="block b5"></li>
-                  <li class="block b4"></li>
-                </ul>
-                <p></p>
-              </div>
-              <div class="inner">
-                <ul class="cube back">
-                  <li class="block b0"></li>
-                  <li class="block b1"></li>
-                  <li class="block b2"></li>
-                  <li class="block b7"></li>
-                  <li class="backCenter"></li>
-                  <li class="block b3"></li>
-                  <li class="block b6"></li>
-                  <li class="block b5"></li>
-                  <li class="block b4"></li>
-                </ul>
-                <p></p>
-              </div>
-              <div class="inner downInner">
-                <ul class="cube down">
-                  <li class="block b0"></li>
-                  <li class="block b1"></li>
-                  <li class="block b2"></li>
-                  <li class="block b7"></li>
-                  <li class="downCenter"></li>
-                  <li class="block b3"></li>
-                  <li class="block b6"></li>
-                  <li class="block b5"></li>
-                  <li class="block b4"></li>
-                </ul>
-                <p></p>
-              </div>
+              <!--<div class="inner">-->
+                <!--<ul class="cube up">-->
+                  <!--<li class="block b0"></li>-->
+                  <!--<li class="block b1"></li>-->
+                  <!--<li class="block b2"></li>-->
+                  <!--<li class="block b7"></li>-->
+                  <!--<li class="upCenter"></li>-->
+                  <!--<li class="block b3"></li>-->
+                  <!--<li class="block b6"></li>-->
+                  <!--<li class="block b5"></li>-->
+                  <!--<li class="block b4"></li>-->
+                <!--</ul>-->
+                <!--<p></p>-->
+              <!--</div>-->
+              <!--<div class="inner">-->
+                <!--<ul class="cube left">-->
+                  <!--<li class="block b0"></li>-->
+                  <!--<li class="block b1"></li>-->
+                  <!--<li class="block b2"></li>-->
+                  <!--<li class="block b7"></li>-->
+                  <!--<li class="leftCenter"></li>-->
+                  <!--<li class="block b3"></li>-->
+                  <!--<li class="block b6"></li>-->
+                  <!--<li class="block b5"></li>-->
+                  <!--<li class="block b4"></li>-->
+                <!--</ul>-->
+                <!--<p></p>-->
+              <!--</div>-->
+              <!--<div class="inner">-->
+                <!--<ul class="cube front">-->
+                  <!--<li class="block b0"></li>-->
+                  <!--<li class="block b1"></li>-->
+                  <!--<li class="block b2"></li>-->
+                  <!--<li class="block b7"></li>-->
+                  <!--<li class="frontCenter"></li>-->
+                  <!--<li class="block b3"></li>-->
+                  <!--<li class="block b6"></li>-->
+                  <!--<li class="block b5"></li>-->
+                  <!--<li class="block b4"></li>-->
+                <!--</ul>-->
+                <!--<p></p>-->
+              <!--</div>-->
+              <!--<div class="inner">-->
+                <!--<ul class="cube right">-->
+                  <!--<li class="block b0"></li>-->
+                  <!--<li class="block b1"></li>-->
+                  <!--<li class="block b2"></li>-->
+                  <!--<li class="block b7"></li>-->
+                  <!--<li class="rightCenter"></li>-->
+                  <!--<li class="block b3"></li>-->
+                  <!--<li class="block b6"></li>-->
+                  <!--<li class="block b5"></li>-->
+                  <!--<li class="block b4"></li>-->
+                <!--</ul>-->
+                <!--<p></p>-->
+              <!--</div>-->
+              <!--<div class="inner">-->
+                <!--<ul class="cube back">-->
+                  <!--<li class="block b0"></li>-->
+                  <!--<li class="block b1"></li>-->
+                  <!--<li class="block b2"></li>-->
+                  <!--<li class="block b7"></li>-->
+                  <!--<li class="backCenter"></li>-->
+                  <!--<li class="block b3"></li>-->
+                  <!--<li class="block b6"></li>-->
+                  <!--<li class="block b5"></li>-->
+                  <!--<li class="block b4"></li>-->
+                <!--</ul>-->
+                <!--<p></p>-->
+              <!--</div>-->
+              <!--<div class="inner">-->
+                <!--<ul class="cube down">-->
+                  <!--<li class="block b0"></li>-->
+                  <!--<li class="block b1"></li>-->
+                  <!--<li class="block b2"></li>-->
+                  <!--<li class="block b7"></li>-->
+                  <!--<li class="downCenter"></li>-->
+                  <!--<li class="block b3"></li>-->
+                  <!--<li class="block b6"></li>-->
+                  <!--<li class="block b5"></li>-->
+                  <!--<li class="block b4"></li>-->
+                <!--</ul>-->
+                <!--<p></p>-->
+              <!--</div>-->
             </div>
           </div>
         </div>
