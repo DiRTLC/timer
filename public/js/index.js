@@ -304,10 +304,8 @@ $(function () {
   function disorganize () {
     var direction = ['U', 'D', 'F', 'B', 'L', 'R']
     var rotationType = ['', '\'', '2']
-    var double = 'w'
-    var tier = ['2', '3']
     var disorganizeContent = ''
-    var l
+
     var arr = []
     
     for(var i=0; i<20; i++){
@@ -317,16 +315,38 @@ $(function () {
       arr.push(dirIndex)
     }
     for(var i=0; i<arr.length; i++){
-      var random = Math.floor(Math.random()*5)
+      var tier = '',
+        double = '',
+        random
+
+      if(type===4 || type===5){
+        random = Math.floor(Math.random()*2)
+        if(random===1){
+          double = 'w'
+        }
+      }else if(type>5){
+        random = Math.floor(Math.random()*3)
+        if(random===2){
+          double = 'w'
+          tier = '3'
+        }else if(random===1){
+          double = 'w'
+        }
+      }
+      random = Math.floor(Math.random()*5)
       var move = ''
       if(random===4){
-        move += direction[arr[i]] + '2'
+        move += tier + direction[arr[i]] + double + '2'
       }else if(random===2 || random===3){
-        move += direction[arr[i]] + '\''
+        move += tier + direction[arr[i]] + double + '\''
       }else{
-        move += direction[arr[i]]
+        move += tier + direction[arr[i]] + double
       }
-      disorganizeContent += (move + ' ')
+
+      if(i<arr.length-1){
+        move += ' '
+      }
+      disorganizeContent += move
     }
     //todo 检查移动合理性
     function checkMove (dirIndex) {
@@ -340,7 +360,7 @@ $(function () {
     }
 
     $('.disorganize').html(disorganizeContent)
-    console.log(disorganizeContent.split(' '));
+    // console.log(disorganizeContent.split(' '));
     disorganizePic(disorganizeContent)
   }
 
@@ -349,9 +369,11 @@ $(function () {
     // var type = 3
     // var str = 'B L B2 R\' L U2 R\' U2 D R2 F R\' D2 L2 U2 L2 D\' B2 D2 B\''
 // var str = 'R U L B F D'
+//     str = 'R2 B\' F R2 D2 U\' F2 U\' R\' D\' L2 D\' F\' B\' L\' D B2 F D\' R'
+//     str = 'U L2 F Uw Lw D R F Rw U2 R\' U\' Lw\' R Bw R\' Uw\' B D2 Fw2'
     console.log(str);
     var temp = str.split(' ')
-    console.log(temp, temp.length);
+    console.log(temp);
 
     var arr = ['up', 'left', 'front', 'right', 'back', 'down']
     var color = ['w', 'o', 'g', 'r', 'b', 'y']
@@ -393,33 +415,64 @@ $(function () {
 //   right: ['r', 'r', 'r', 'r', 'r', 'r', 'r', 'r']
 // }
 
-    var upSide, downSide, leftSide, rightSide;
+    // var upSide, downSide, leftSide, rightSide;
+    var dirTemp = []
+    var leftArr = [],
+        rightArr = [],
+        reverseArr = []
     temp.map(function (item, index) {
-      var upTemp, frontTemp, backTemp, leftTemp, rightTemp, downTemp;
-      upSide = []
-      downSide = []
-      leftSide = []
-      rightSide = []
-      switch (item[0]) {
-        case 'U':
-          rotateSide(initColor.up)
+      var itemTemp = item[0]
+      var tier = 1
+      leftArr = [],
+        rightArr = []
+      
+      
+      // console.log(item.indexOf('w'));
+      // console.log(item, item.length);
+      if(item.indexOf('3')===0){
+        tier = 3
+      }else if($.inArray('w', item)!==-1){
+        tier = 2
+      }
+      if(item.length===4){
+        itemTemp = item[1]
+      }else if(item.length===3 && item[2]==='w'){
+        itemTemp = item[1]
+      }
+      //todo 获取色块的index
+      for(var i=0; i<type; i++){
+        for(var j=0; j<type; j++){
+          leftArr.push(type*j+i)
+          rightArr.push(type*(j+1)-1-i)
+        }
+      }
+      // console.log(leftArr,rightArr,reverseArr);
 
-          frontTemp = initColor.front.slice(0, type);
-          backTemp = initColor.back.slice(0, type);
-          leftTemp = initColor.left.slice(0, type);
-          rightTemp = initColor.right.slice(0, type);
-//        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
-          if(item.lastIndexOf('\'')===1){
+      var upTemp, frontTemp, backTemp, leftTemp, rightTemp, downTemp;
+      // upSide = []
+      // downSide = []
+      // leftSide = []
+      // rightSide = []
+      // console.log(itemTemp);
+      switch (itemTemp) {
+        case 'U':
+          dirTemp = initColor.up.slice(0)
+          frontTemp = initColor.front.slice(0, type*tier);
+          backTemp = initColor.back.slice(0, type*tier);
+          leftTemp = initColor.left.slice(0, type*tier);
+          rightTemp = initColor.right.slice(0, type*tier);
+       // console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
+          if(item.endsWith('\'')){
             rotate(item, initColor.up)
-            for(var i=0; i<type; i++){
+            for(var i=0; i<type*tier; i++){
               initColor.front[i] = leftTemp[i];
               initColor.right[i] = frontTemp[i];
               initColor.back[i] = rightTemp[i];
               initColor.left[i] = backTemp[i];
             }
-          }else if (item.lastIndexOf('2')===1) {
+          }else if (item.endsWith('2')) {
             rotate(item, initColor.up)
-            for(var i=0; i<type; i++){
+            for(var i=0; i<type*tier; i++){
               initColor.front[i] = backTemp[i];
               initColor.right[i] = leftTemp[i];
               initColor.back[i] = frontTemp[i];
@@ -427,7 +480,7 @@ $(function () {
             }
           }else{
             rotate(item, initColor.up)
-            for(var i=0; i<type; i++){
+            for(var i=0; i<type*tier; i++){
               initColor.front[i] = rightTemp[i];
               initColor.right[i] = backTemp[i];
               initColor.back[i] = leftTemp[i];
@@ -436,196 +489,193 @@ $(function () {
           }
           break;
         case 'D':
-          rotateSide(initColor.down)
+          dirTemp = initColor.down.slice(0)
 
-          frontTemp = initColor.front.slice(-type);
-          backTemp = initColor.back.slice(-type);
-          leftTemp = initColor.left.slice(-type);
-          rightTemp = initColor.right.slice(-type);
-          if(item.lastIndexOf('\'')===1){
+          frontTemp = initColor.front.slice(-type*tier);
+          backTemp = initColor.back.slice(-type*tier);
+          leftTemp = initColor.left.slice(-type*tier);
+          rightTemp = initColor.right.slice(-type*tier);
+          if(item.endsWith('\'')){
             rotate(item, initColor.down)
-            for(var i=0; i<type; i++){
-              initColor.front[type*(type-1)+i] = rightTemp[i];
-              initColor.right[type*(type-1)+i] = backTemp[i];
-              initColor.back[type*(type-1)+i] = leftTemp[i];
-              initColor.left[type*(type-1)+i] = frontTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.front[type*(type-tier)+i] = rightTemp[i];
+              initColor.right[type*(type-tier)+i] = backTemp[i];
+              initColor.back[type*(type-tier)+i] = leftTemp[i];
+              initColor.left[type*(type-tier)+i] = frontTemp[i];
             }
-          }else if (item.lastIndexOf('2')===1) {
+          }else if (item.endsWith('2')) {
             rotate(item, initColor.down)
-            for(var i=0; i<type; i++){
-              initColor.front[type*(type-1)+i] = backTemp[i];
-              initColor.right[type*(type-1)+i] = leftTemp[i];
-              initColor.back[type*(type-1)+i] = frontTemp[i];
-              initColor.left[type*(type-1)+i] = rightTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.front[type*(type-tier)+i] = backTemp[i];
+              initColor.right[type*(type-tier)+i] = leftTemp[i];
+              initColor.back[type*(type-tier)+i] = frontTemp[i];
+              initColor.left[type*(type-tier)+i] = rightTemp[i];
             }
           }else{
             rotate(item, initColor.down)
-            for(var i=0; i<type; i++){
-              initColor.front[type*(type-1)+i] = leftTemp[i];
-              initColor.right[type*(type-1)+i] = frontTemp[i];
-              initColor.back[type*(type-1)+i] = rightTemp[i];
-              initColor.left[type*(type-1)+i] = backTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.front[type*(type-tier)+i] = leftTemp[i];
+              initColor.right[type*(type-tier)+i] = frontTemp[i];
+              initColor.back[type*(type-tier)+i] = rightTemp[i];
+              initColor.left[type*(type-tier)+i] = backTemp[i];
             }
           }
           break;
         case 'F':
-          rotateSide(initColor.front)
-
-          upTemp = initColor.up.slice(-type);
-          downTemp = initColor.down.slice(0, type).reverse();
-          for(var i=0; i<type; i++){
+          dirTemp = initColor.front.slice(0)
+          console.log(tier);
+          upTemp = initColor.up.slice(-type*tier).reverse();
+          downTemp = initColor.down.slice(0, type*tier);
+          for(var i=0; i<type*tier; i++){
             leftTemp || (leftTemp=[])
-            leftTemp.unshift(initColor.left[type*(i+1)-1])
-
+            leftTemp.push(initColor.left[rightArr[i]])
             rightTemp || (rightTemp=[])
-            rightTemp.push(initColor.right[type*i])
+            rightTemp.unshift(initColor.right[rightArr[type*(type-tier)+i]])
           }
-          if(item.lastIndexOf('\'')===1){
+          if(item.endsWith('\'')){
             rotate(item, initColor.front)
-            for(var i=0; i<type; i++){
-              initColor.up[type*(type-1)+i] = rightTemp[i];
-              initColor.right[type*i] = downTemp[i];
-              initColor.down[type-1-i] = leftTemp[i];
-              initColor.left[type*(type-i)-1] = upTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[type*type-1-i] = rightTemp[i];
+              initColor.right[rightArr[type*type-1-i]] = downTemp[i];
+              initColor.down[i] = leftTemp[i];
+              initColor.left[rightArr[i]] = upTemp[i];
             }
-          }else if (item.lastIndexOf('2')===1) {
+          }else if (item.endsWith('2')) {
             rotate(item, initColor.front)
-            for(var i=0; i<type; i++){
-              initColor.up[type*(type-1)+i] = downTemp[i];
-              initColor.right[type*i] = leftTemp[i];
-              initColor.down[type-1-i] = upTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[type*type-1-i] = downTemp[i];
+              initColor.right[rightArr[type*type-1-i]] = leftTemp[i];
+              initColor.down[i] = upTemp[i];
               // console.log(rightTemp);
-              initColor.left[type*(type-i)-1] = rightTemp[i];
+              initColor.left[rightArr[i]] = rightTemp[i];
             }
           }else{
             rotate(item, initColor.front)
-            for(var i=0; i<type; i++){
-              initColor.up[type*(type-1)+i] = leftTemp[i];
-              initColor.left[type*(type-i)-1] = downTemp[i];
-              initColor.down[type-1-i] = rightTemp[i];
-              initColor.right[type*i] = upTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[type*type-1-i] = leftTemp[i];
+              initColor.left[rightArr[i]] = downTemp[i];
+              initColor.down[i] = rightTemp[i];
+              initColor.right[rightArr[type*type-1-i]] = upTemp[i];
             }
           }
           break;
         case 'B':
-          rotateSide(initColor.back)
+          dirTemp = initColor.back.slice(0)
 
-          upTemp = initColor.up.slice(0, type);
-          downTemp = initColor.down.slice(-type).reverse();
-          for(var i=0; i<type; i++){
+          upTemp = initColor.up.slice(0, type*tier);
+          downTemp = initColor.down.slice(-type*tier).reverse();
+          for(var i=0; i<type*tier; i++){
             leftTemp || (leftTemp=[])
-            leftTemp.unshift(initColor.left[type*i])
+            leftTemp.unshift(initColor.left[rightArr[type*(type-tier)+i]])
 
             rightTemp || (rightTemp=[])
-            rightTemp.push(initColor.right[type*(i+1)-1])
+            rightTemp.push(initColor.right[rightArr[i]])
           }
-//        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
-          if(item.lastIndexOf('\'')===1){
+          if(item.endsWith('\'')){
             rotate(item, initColor.back)
-            for(var i=0; i<type; i++){
+            for(var i=0; i<type*tier; i++){
               initColor.up[i] = leftTemp[i];
-              initColor.left[type*(type-1-i)] = downTemp[i];
+              initColor.left[rightArr[type*type-1-i]] = downTemp[i];
               initColor.down[type*type-1-i] = rightTemp[i];
-              initColor.right[type*(i+1)-1] = upTemp[i];
+              initColor.right[rightArr[i]] = upTemp[i];
             }
-          }else if (item.lastIndexOf('2')===1) {
+          }else if (item.endsWith('2')) {
             rotate(item, initColor.back)
-            for(var i=0; i<type; i++){
+            for(var i=0; i<type*tier; i++){
               initColor.up[i] = downTemp[i];
-              initColor.right[type*(i+1)-1] = leftTemp[i];
+              initColor.right[rightArr[i]] = leftTemp[i];
               initColor.down[type*type-1-i] = upTemp[i];
-              initColor.left[type*(type-1-i)] = rightTemp[i];
+              initColor.left[rightArr[type*type-1-i]] = rightTemp[i];
             }
           }else{
             rotate(item, initColor.back)
-            for(var i=0; i<type; i++){
+            for(var i=0; i<type*tier; i++){
               initColor.up[i] = rightTemp[i];
-              initColor.right[type*(i+1)-1] = downTemp[i];
+              initColor.right[rightArr[i]] = downTemp[i];
               initColor.down[type*type-1-i] = leftTemp[i];
-              initColor.left[type*(type-1-i)] = upTemp[i];
+              initColor.left[rightArr[type*type-1-i]] = upTemp[i];
             }
           }
           break;
         case 'L':
-          rotateSide(initColor.left)
+          dirTemp = initColor.left.slice(0)
 
-          for(var i=0; i<type; i++){
+          for(var i=0; i<type*tier; i++){
             upTemp || (upTemp=[])
             frontTemp || (frontTemp=[])
             downTemp || (downTemp=[])
             backTemp || (backTemp=[])
 
-            upTemp.push(initColor.up[type*i])
-            frontTemp.push(initColor.front[type*i])
-            downTemp.push(initColor.down[type*i])
-            backTemp.unshift(initColor.back[type*(i+1)-1])
+            upTemp.push(initColor.up[leftArr[i]])
+            frontTemp.push(initColor.front[leftArr[i]])
+            downTemp.push(initColor.down[leftArr[i]])
+            backTemp.unshift(initColor.back[leftArr[type*(type-tier)+i]])
           }
 
 //        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
-          if(item.lastIndexOf('\'')===1){
+          if(item.endsWith('\'')){
             rotate(item, initColor.left)
-            for(var i=0; i<type; i++){
-              initColor.up[type*i] = frontTemp[i];
-              initColor.front[type*i] = downTemp[i];
-              initColor.down[type*i] = backTemp[i];
-              initColor.back[type*(type-i)-1] = upTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[leftArr[i]] = frontTemp[i];
+              initColor.front[leftArr[i]] = downTemp[i];
+              initColor.down[leftArr[i]] = backTemp[i];
+              initColor.back[leftArr[type*type-1-i]] = upTemp[i];
             }
-          }else if (item.lastIndexOf('2')===1) {
+          }else if (item.endsWith('2')) {
             rotate(item, initColor.left)
-            for(var i=0; i<type; i++){
-              initColor.up[type*i] = downTemp[i];
-              initColor.front[type*i] = backTemp[i];
-              initColor.down[type*i] = upTemp[i];
-              initColor.back[type*(type-i)-1] = frontTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[leftArr[i]] = downTemp[i];
+              initColor.front[leftArr[i]] = backTemp[i];
+              initColor.down[leftArr[i]] = upTemp[i];
+              initColor.back[leftArr[type*type-1-i]] = frontTemp[i];
             }
           }else{
             rotate(item, initColor.left)
-            for(var i=0; i<type; i++){
-              initColor.up[type*i] = backTemp[i];
-              initColor.front[type*i] = upTemp[i];
-              initColor.down[type*i] = frontTemp[i];
-              initColor.back[type*(type-i)-1] = downTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[leftArr[i]] = backTemp[i];
+              initColor.front[leftArr[i]] = upTemp[i];
+              initColor.down[leftArr[i]] = frontTemp[i];
+              initColor.back[leftArr[type*type-1-i]] = downTemp[i];
             }
           }
           break;
         case 'R':
-          rotateSide(initColor.right)
-          for(var i=0; i<type; i++){
+          dirTemp = initColor.right.slice(0)
+          for(var i=0; i<type*tier; i++){
             upTemp || (upTemp=[])
             frontTemp || (frontTemp=[])
             downTemp || (downTemp=[])
             backTemp || (backTemp=[])
 
-            upTemp.push(initColor.up[type*(i+1)-1])
-            frontTemp.push(initColor.front[type*(i+1)-1])
-            downTemp.push(initColor.down[type*(i+1)-1])
-            backTemp.unshift(initColor.back[type*i])
+            upTemp.push(initColor.up[rightArr[i]])
+            frontTemp.push(initColor.front[rightArr[i]])
+            downTemp.push(initColor.down[rightArr[i]])
+            backTemp.unshift(initColor.back[rightArr[type*(type-tier)+i]])
           }
-
-//        console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
-          if(item.lastIndexOf('\'')===1){
+       // console.log(upTemp,frontTemp,backTemp,leftTemp,rightTemp);
+          if(item.endsWith('\'')){
             rotate(item, initColor.right)
-            for(var i=0; i<type; i++){
-              initColor.up[type*(i+1)-1] = backTemp[i];
-              initColor.back[type*(type-1-i)] = downTemp[i];
-              initColor.down[type*(i+1)-1] = frontTemp[i];
-              initColor.front[type*(i+1)-1] = upTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[rightArr[i]] = backTemp[i];
+              initColor.back[rightArr[type*type-1-i]] = downTemp[i];
+              initColor.down[rightArr[i]] = frontTemp[i];
+              initColor.front[rightArr[i]] = upTemp[i];
             }
-          }else if (item.lastIndexOf('2')===1) {
+          }else if (item.endsWith('2')) {
             rotate(item, initColor.right)
-            for(var i=0; i<type; i++){
-              initColor.up[type*(i+1)-1] = downTemp[i];
-              initColor.back[type*(type-1-i)] = frontTemp[i];
-              initColor.down[type*(i+1)-1] = upTemp[i];
-              initColor.front[type*(i+1)-1] = backTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[rightArr[i]] = downTemp[i];
+              initColor.back[rightArr[type*type-1-i]] = frontTemp[i];
+              initColor.down[rightArr[i]] = upTemp[i];
+              initColor.front[rightArr[i]] = backTemp[i];
             }
           }else{
             rotate(item, initColor.right)
-            for(var i=0; i<type; i++){
-              initColor.up[type*(i+1)-1] = frontTemp[i];
-              initColor.front[type*(i+1)-1] = downTemp[i];
-              initColor.down[type*(i+1)-1] = backTemp[i];
-              initColor.back[type*(type-1-i)] = upTemp[i];
+            for(var i=0; i<type*tier; i++){
+              initColor.up[rightArr[i]] = frontTemp[i];
+              initColor.front[rightArr[i]] = downTemp[i];
+              initColor.down[rightArr[i]] = backTemp[i];
+              initColor.back[rightArr[type*type-1-i]] = upTemp[i];
             }
           }
           break;
@@ -671,42 +721,34 @@ $(function () {
       }
     }
 
-//获取旋转面
-    function rotateSide (dir) {
-      upSide = dir.slice(0, type);
-      downSide = dir.slice(-type).reverse();
-      for(var i=0; i<type; i++){
-        leftSide || (leftSide=[])
-        rightSide || (rightSide=[])
-        leftSide.unshift(dir[type*i])
-        rightSide.push(dir[type*(i+1)-1])
-      }
-    }
 
-//整面旋转处理
+//todo 整面旋转处理
     function rotate (item, dir) {
       // console.log(rightSide);
-      if(item.lastIndexOf('\'')===1){
-        for(var i=0; i<type; i++){
-          dir[i] = rightSide[i]
-          dir[type*(type-1-i)] = upSide[i]
-          dir[type*type-i-1] = leftSide[i]
-          dir[type*(i+1)-1] = downSide[i]
+      if(item.endsWith('\'')){
+        for(var i=0; i<type*type; i++){
+          dir[rightArr[type*type-1-i]] = dirTemp[i]
+          // dir[i] = rightSide[i]
+          // dir[type*(type-1-i)] = upSide[i]
+          // dir[type*type-i-1] = leftSide[i]
+          // dir[type*(i+1)-1] = downSide[i]
         }
-      }else if (item.lastIndexOf('2')===1) {
-        for(var i=0; i<type; i++){
-          dir[i] = downSide[i]
-          dir[type*(type-1-i)] = rightSide[i]
-          dir[type*type-i-1] = upSide[i]
-          dir[type*(i+1)-1] = leftSide[i]
+      }else if (item.endsWith('2')) {
+        for(var i=0; i<type*type; i++){
+          dir[type*type-1-i] = dirTemp[i]
+          // dir[i] = downSide[i]
+          // dir[type*(type-1-i)] = rightSide[i]
+          // dir[type*type-i-1] = upSide[i]
+          // dir[type*(i+1)-1] = leftSide[i]
         }
       }else{
-        for(var i=0; i<type; i++){
+        for(var i=0; i<type*type; i++){
+          dir[rightArr[i]] = dirTemp[i]
           // console.log(rightSide);
-          dir[i] = leftSide[i]
-          dir[type*(type-1-i)] = downSide[i]
-          dir[type*type-i-1] = rightSide[i]
-          dir[type*(i+1)-1] = upSide[i]
+          // dir[i] = leftSide[i]
+          // dir[type*(type-1-i)] = downSide[i]
+          // dir[type*type-i-1] = rightSide[i]
+          // dir[type*(i+1)-1] = upSide[i]
         }
       }
     }
@@ -743,15 +785,15 @@ $(function () {
       $try.text(all.length)
 
       var allResult = deal(all)
-      console.log(all);
-      console.log(allResult);
+      // console.log(all);
+      // console.log(allResult);
       allResult.data.map(function (item, index) {
         // console.log(item, index);
         onAverage += Math.round(parseFloat(item)*100)
       })
       onAverage = parseInt(onAverage/allResult.data.length)/100;
 
-      console.log(onAverage);
+      // console.log(onAverage);
       //
       // if(all.length>=3 && all.length<10){
       //
@@ -794,17 +836,17 @@ $(function () {
 
 
   function deal (a) {
-    console.log(a);
+    // console.log(a);
     var fastest = Math.min.apply(null, a)
     var slowest = Math.max.apply(null, a)
-    console.log(fastest)
-    console.log(a);
+    // console.log(fastest)
+    // console.log(a);
     var fIndex = a.indexOf(fastest)
     a.splice(fIndex, 1)
-    console.log(fIndex);
+    // console.log(fIndex);
     var sIndex = a.indexOf(slowest)
     a.splice(sIndex, 1)
-    console.log(a);
+    // console.log(a);
     return {
       data: a,
       fast: fastest,
